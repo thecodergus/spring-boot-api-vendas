@@ -6,6 +6,7 @@ import org.example.domain.entity.Cliente;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +25,7 @@ public class Pedido {
     private LocalDate dataPedido;
     @Column
     private BigDecimal total;
+
+    private List<ItemPedido> itens;
 
 }

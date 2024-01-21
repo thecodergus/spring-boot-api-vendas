@@ -15,6 +15,7 @@ import org.example.rest.dto.ItensPedidosDTO;
 import org.example.rest.dto.PedidoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -36,6 +37,7 @@ public class PedidoServiceImpl implements PedidoService {
     private final ItensPedidos itensPedidosRepository;
 
     @Override
+    @Transactional
     public Pedido salvar(PedidoDTO dto) {
         Integer idCliente = dto.getCliente();
         Cliente cliente = clientesRepository
@@ -49,8 +51,13 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
 
+        List<ItemPedido> itensPedido = converterItens(pedido, dto.getItens());
+        repository.save(pedido);
+        itensPedidosRepository.saveAll(itensPedido);
 
-        return null;
+        pedido.setItens(itensPedido);
+
+        return pedido;
     }
 
     private List<ItemPedido> converterItens(Pedido pedido, List<ItensPedidosDTO> itens){
