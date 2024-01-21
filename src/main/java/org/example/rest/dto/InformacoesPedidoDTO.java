@@ -19,4 +19,5 @@ public class InformacoesPedidoDTO {
     private BigDecimal total;
     private List<InfomacaoItemPedidoDTO> itens;
     private String dataPedido;
+    private String status;
 }
