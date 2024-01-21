@@ -2,7 +2,9 @@ package org.example.rest.controller;
 
 import org.example.domain.entity.ItemPedido;
 import org.example.domain.entity.Pedido;
+import org.example.domain.enums.StatusPedido;
 import org.example.domain.service.PedidoService;
+import org.example.rest.dto.AtualizacaoStatusPedidoDTO;
 import org.example.rest.dto.InfomacaoItemPedidoDTO;
 import org.example.rest.dto.InformacoesPedidoDTO;
 import org.example.rest.dto.PedidoDTO;
@@ -66,5 +68,13 @@ public class PedidoController {
                         .build()
                 )
                 .collect(Collectors.toList());
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@RequestBody AtualizacaoStatusPedidoDTO dto, @PathVariable Integer id){
+        String novoStatus = dto.getNovoStatus();
+        service
+                .atualizaStatus(id, StatusPedido.valueOf(novoStatus));
     }
 }

@@ -11,6 +11,7 @@ import org.example.domain.repository.ItensPedidos;
 import org.example.domain.repository.Pedidos;
 import org.example.domain.repository.Produtos;
 import org.example.domain.service.PedidoService;
+import org.example.exception.PedidoNaoEncontradoException;
 import org.example.exception.RegraNegocioException;
 import org.example.rest.dto.ItensPedidosDTO;
 import org.example.rest.dto.PedidoDTO;
@@ -93,5 +94,18 @@ public class PedidoServiceImpl implements PedidoService {
                 .findByIdFetchItens(id);
 
     }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido){
+        repository
+                .findById(id)
+                .map(pedido -> {
+                    pedido.setStatus(statusPedido);
+                    return repository.save(pedido);
+                })
+                .orElseThrow(PedidoNaoEncontradoException::new);
+    }
+
 }
 
