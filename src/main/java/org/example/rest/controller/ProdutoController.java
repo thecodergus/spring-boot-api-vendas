@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class ProdutoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Produto postProduto(@RequestBody Produto produto){
+    public Produto postProduto(@RequestBody @Valid Produto produto){
         return produtos.save(produto);
     }
 
@@ -50,7 +51,7 @@ public class ProdutoController {
 
     }
     @PutMapping("/{id}")
-    public ResponseEntity putClient(@PathVariable Integer id, @RequestBody Produto produto){
+    public ResponseEntity putClient(@PathVariable Integer id, @RequestBody @Valid Produto produto){
         return produtos
                 .findById(id)
                 .map(clienteExistente ->{
